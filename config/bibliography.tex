@@ -1,0 +1,55 @@
+% ------------------------------------------------------------
+% Bibliography setup (choose one style block)
+% ------------------------------------------------------------
+
+% APA style (default)
+\usepackage[
+  backend=biber,
+  natbib=true,
+  style=apa,
+  refsection=chapter,
+  defernumbers=true,
+  sorting=nyt,
+  giveninits=true,
+  backref=true,
+  urldate=iso,
+  date=iso,
+  seconds=true,
+  dateera=astronomical
+]{biblatex}
+
+% Numeric style option
+% \usepackage[
+%   backend=biber,
+%   style=numeric-comp,
+%   refsection=chapter,
+%   defernumbers=true,
+%   sorting=none,
+%   giveninits=true,
+%   backref=true,
+%   urldate=iso,
+%   date=iso,
+%   seconds=true,
+%   dateera=astronomical
+% ]{biblatex}
+
+% Author-year style option
+% \usepackage[
+%   backend=biber,
+%   style=authoryear-comp,
+%   refsection=chapter,
+%   defernumbers=true,
+%   sorting=nyt,
+%   giveninits=true,
+%   backref=true,
+%   urldate=iso,
+%   date=iso,
+%   seconds=true,
+%   dateera=astronomical
+% ]{biblatex}
+
+\InputIfFileExists{config/bibliography-sources.tex}{}{%
+  \PackageWarning{novaims-dgi}{No bibliography sources found. Run `make` to generate config/bibliography-sources.tex}%
+}
+
+\AtBeginDocument{\let\cite\parencite}

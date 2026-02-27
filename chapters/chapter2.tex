@@ -1,0 +1,392 @@
+% ============================================================
+%  Chapter 2 — Writing in LaTeX: A Practical Guide
+% ============================================================
+\chapter{Writing in \LaTeX: A Practical Guide} \label{chap:latex}
+
+This chapter is a hands-on guide to the \LaTeX{} constructs you will use most
+when writing your thesis.  Rather than showing only code snippets, each section
+demonstrates the feature \emph{live} so you can see the rendered output directly
+in this document alongside the source that produced it.  The figures, tables,
+and citations in this chapter all use real assets from this template repository,
+so the document compiles out-of-the-box.
+
+% ------------------------------------------------------------
+\section{Document Structure} \label{sec:sections}
+% ------------------------------------------------------------
+
+Chapters are divided with the standard sectioning hierarchy.  The template
+numbers them automatically:
+
+\begin{verbatim}
+\section{My Section}           % e.g. 2.1
+\subsection{My Subsection}     % e.g. 2.1.1
+\subsubsection{My Sub-sub}     % e.g. 2.1.1.1
+\paragraph{Inline heading}     % not numbered
+\end{verbatim}
+
+Never skip levels, and avoid more than three levels of nesting in a thesis.
+
+% ------------------------------------------------------------
+\section{Labels and Cross-References} \label{sec:labels}
+% ------------------------------------------------------------
+
+Attach a \texttt{\textbackslash label\{\}} to any numbered object — chapter,
+section, figure, table, equation — and refer to it anywhere with
+\texttt{\textbackslash ref\{\}}.  Numbers update automatically.
+
+\subsection{Labelling conventions} \label{sec:labelconv}
+
+Use a consistent prefix to keep labels scannable:
+
+\begin{description}
+  \item[\texttt{chap:}]  Chapters      — \verb|\label{chap:introduction}|
+  \item[\texttt{sec:}]   Sections      — \verb|\label{sec:methodology}|
+  \item[\texttt{fig:}]   Figures       — \verb|\label{fig:accmap}|
+  \item[\texttt{tab:}]   Tables        — \verb|\label{tab:summary}|
+  \item[\texttt{eq:}]    Equations     — \verb|\label{eq:poisson}|
+  \item[\texttt{app:}]   Appendix secs — \verb|\label{app:workflow}|
+  \item[\texttt{ann:}]   Annex secs    — \verb|\label{ann:commands}|
+\end{description}
+
+\subsection{Making a reference} \label{sec:makeref}
+
+Always put a tilde~(\textasciitilde) between the word and
+\texttt{\textbackslash ref} — it is a non-breaking space that prevents
+``Figure'' from ending up alone at the end of a line:
+
+\begin{verbatim}
+See Section~\ref{sec:methodology} for details.
+Figure~\ref{fig:accmap} shows the spatial distribution.
+Full results are in Appendix~\ref{app:workflow}.
+Raw data are in Annex~\ref{ann:commands}.
+Equation~\eqref{eq:poisson} defines the model.   % use \eqref for equations
+See page~\pageref{fig:accmap} for the map.
+\end{verbatim}
+
+\noindent\textbf{Live example} — this sentence refers back to the subsection
+just above: Section~\ref{sec:labelconv} listed the labelling prefixes, and
+Figure~\ref{fig:accmap} on page~\pageref{fig:accmap} shows the accident map
+introduced in Section~\ref{sec:figures}.
+
+% ------------------------------------------------------------
+\section{Figures} \label{sec:figures}
+% ------------------------------------------------------------
+
+Place all image files in \texttt{figures/}.  Use a path relative to the
+project root in \texttt{\textbackslash includegraphics}.
+
+\subsection{A single figure} \label{sec:singlefig}
+
+The source below produced Figure~\ref{fig:accmap}:
+
+\begin{verbatim}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/sevAccMap24LAB.png}
+  \caption{Spatial distribution of severe accident reports across mainland
+           Portugal, 2024.  Darker municipalities had higher daily counts.}
+  \label{fig:accmap}
+\end{figure}
+\end{verbatim}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/sevAccMap24LAB.png}
+  \caption{Spatial distribution of severe accident reports across mainland
+           Portugal, 2024.  Darker municipalities had higher daily counts.}
+  \label{fig:accmap}
+\end{figure}
+
+Prefer \texttt{.pdf}/\texttt{.eps} for vector graphics and \texttt{.png} for
+raster images.  The specifier \texttt{[htbp]} tells \LaTeX{} to try: here,
+top, bottom, float page.  Avoid hardcoding \texttt{[H]} unless essential.
+
+\subsection{Side-by-side figures} \label{sec:subfigs}
+
+Use the \texttt{subcaption} package (already loaded).
+Figure~\ref{fig:twoplots}, using two files already in \texttt{figures/}:
+
+\begin{verbatim}
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/sir_day_of_week.png}
+    \caption{Reports by day of week.}
+    \label{fig:dayofweek}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/sir_by_month.png}
+    \caption{Reports by month.}
+    \label{fig:bymonth}
+  \end{subfigure}
+  \caption{Temporal patterns in severe accident reports, Portugal 2024.}
+  \label{fig:twoplots}
+\end{figure}
+\end{verbatim}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/sir_day_of_week.png}
+    \caption{Reports by day of week.}
+    \label{fig:dayofweek}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/sir_by_month.png}
+    \caption{Reports by month.}
+    \label{fig:bymonth}
+  \end{subfigure}
+  \caption{Temporal patterns in severe accident reports, Portugal 2024.
+           Panel~(a) shows the weekly cycle; panel~(b) shows seasonal
+           variation.}
+  \label{fig:twoplots}
+\end{figure}
+
+Refer to individual panels as Figure~\ref{fig:dayofweek} and
+Figure~\ref{fig:bymonth}, or to the pair as Figure~\ref{fig:twoplots}.
+
+% ------------------------------------------------------------
+\section{Tables} \label{sec:tables}
+% ------------------------------------------------------------
+
+Use \texttt{booktabs} (already loaded): no vertical lines; horizontal rules
+only via \texttt{\textbackslash toprule}, \texttt{\textbackslash midrule},
+\texttt{\textbackslash bottomrule}.  Captions go \emph{above} tables.
+Table~\ref{tab:summary} was produced by the code that follows:
+
+\begin{table}[htbp]
+  \centering
+  \caption{Descriptive statistics — main variables, mainland Portugal 2024.}
+  \label{tab:summary}
+  \begin{tabular}{lrrrr}
+    \toprule
+    Variable                  & Mean  & Std.\ Dev. & Min    & Max   \\
+    \midrule
+    Severe accidents (daily)  & 3.21  & 2.07       & 0      & 18    \\
+    Temperature (°C)          & 17.4  & 6.3        & $-$1.2 & 42.1  \\
+    Precipitation (mm/h)      & 0.18  & 0.61       & 0      & 8.4   \\
+    Hours above 30°C          & 1.4   & 2.1        & 0      & 11    \\
+    Hours of heavy rain       & 0.3   & 0.8        & 0      & 6     \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{verbatim}
+\begin{table}[htbp]
+  \centering
+  \caption{Descriptive statistics.}
+  \label{tab:summary}
+  \begin{tabular}{lrrrr}
+    \toprule
+    Variable          & Mean & Std.\ Dev. & Min    & Max  \\
+    \midrule
+    Accidents (daily) & 3.21 & 2.07       & 0      & 18   \\
+    Temperature (°C)  & 17.4 & 6.3        & $-$1.2 & 42.1 \\
+    Precipitation     & 0.18 & 0.61       & 0      & 8.4  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{verbatim}
+
+For multi-column headers use \verb|\multicolumn{n}{c}{text}|.  For tables
+spanning multiple pages, load \texttt{longtable} in \texttt{config/packages.tex}.
+
+% ------------------------------------------------------------
+\section{Mathematical Equations} \label{sec:equations}
+% ------------------------------------------------------------
+
+\subsection{Inline mathematics} \label{sec:inlinemath}
+
+Wrap inline maths in dollar signs.  \verb|$\hat{y}_{it} = \mu_i + \varepsilon_{it}$|
+renders as $\hat{y}_{it} = \mu_i + \varepsilon_{it}$.
+
+\subsection{Numbered display equations} \label{sec:displayeq}
+
+Use \texttt{equation} and always label equations you will refer to.
+The code below produced Equation~\eqref{eq:poisson}:
+
+\begin{verbatim}
+\begin{equation}
+  \mathbb{E}[y_{it} \mid \mathbf{x}_{it}]
+    = \exp\!\left(\alpha_i + \beta_t
+      + \mathbf{x}_{it}'\boldsymbol{\gamma}\right)
+  \label{eq:poisson}
+\end{equation}
+\end{verbatim}
+
+\begin{equation}
+  \mathbb{E}[y_{it} \mid \mathbf{x}_{it}]
+    = \exp\!\left(\alpha_i + \beta_t
+      + \mathbf{x}_{it}'\boldsymbol{\gamma}\right)
+  \label{eq:poisson}
+\end{equation}
+
+Use \verb|\eqref{eq:poisson}| (not \verb|\ref|) — it adds parentheses
+automatically so you get ``Equation~\eqref{eq:poisson}''.
+
+\subsection{Multi-line equations} \label{sec:multiline}
+
+\texttt{align} aligns multiple lines at the \texttt{\&} column:
+
+\begin{verbatim}
+\begin{align}
+  \text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y}_i - y_i)^2}
+               \label{eq:rmse} \\
+  \text{MAE}  &= \frac{1}{n}\sum_{i=1}^{n}\lvert\hat{y}_i - y_i\rvert
+               \label{eq:mae}
+\end{align}
+\end{verbatim}
+
+\begin{align}
+  \text{RMSE} &= \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y}_i - y_i)^2}
+               \label{eq:rmse} \\
+  \text{MAE}  &= \frac{1}{n}\sum_{i=1}^{n}\lvert\hat{y}_i - y_i\rvert
+               \label{eq:mae}
+\end{align}
+
+Use \texttt{align*} to suppress all equation numbers.
+
+% ------------------------------------------------------------
+\section{Citations} \label{sec:citations}
+% ------------------------------------------------------------
+
+The template uses \texttt{biblatex} with \texttt{biber} and APA by default.
+Drop any number of \texttt{.bib} files into \texttt{bibliography/} and
+re-run \texttt{make} — they are all picked up automatically.
+
+\subsection{Citation commands} \label{sec:citecmds}
+
+\begin{description}
+  \item[\texttt{\textbackslash cite\{key\}}]
+        Parenthetical citation — aliased to \texttt{\textbackslash parencite}
+        by this template.  Example source:
+        \verb|\cite{andreyWeatherChronicHazard2003}|\\
+        Rendered: \cite{andreyWeatherChronicHazard2003}
+
+  \item[\texttt{\textbackslash textcite\{key\}}]
+        Narrative citation where the author's name is part of the sentence.
+        \verb|\textcite{blackEffectsRainfallVehicle2017}|\\
+        Rendered: \textcite{blackEffectsRainfallVehicle2017}
+
+  \item[\texttt{\textbackslash parencite[p.~45]\{key\}}]
+        With a page number post-note.\\
+        Rendered: \parencite[p.~45]{basaganaHighAmbientTemperatures2015}
+
+  \item[\texttt{\textbackslash parencite\{key1,key2\}}]
+        Multiple sources in one bracket.\\
+        Rendered: \parencite{andreyWeatherChronicHazard2003,blackEffectsRainfallVehicle2017}
+
+  \item[\texttt{\textbackslash citeauthor\{key\}}]
+        Author name only, no year:
+        \citeauthor{basaganaHighAmbientTemperatures2015}
+
+  \item[\texttt{\textbackslash citeyear\{key\}}]
+        Year only, no author:
+        \citeyear{basaganaHighAmbientTemperatures2015}
+
+  \item[\texttt{\textbackslash fullcite\{key\}}]
+        Full bibliography entry rendered inline in the text.
+
+  \item[\texttt{\textbackslash nocite\{*\}}]
+        Forces all entries in a \texttt{.bib} file into the bibliography,
+        whether cited or not.
+\end{description}
+
+\subsection{Live paragraph example} \label{sec:livecite}
+
+The paragraph below uses real bib keys from \texttt{bibliography/traffic\_weather.bib}
+and renders exactly as it would in your own chapter:
+
+\medskip
+\noindent
+The relationship between weather and road safety has been widely studied.
+\textcite{andreyWeatherChronicHazard2003} report that precipitation increased
+crashes by approximately 75\% and injuries by 45\% in mid-sized Canadian cities.
+\textcite{basaganaHighAmbientTemperatures2015} document a J-shaped relationship
+between temperature and crash risk in Spain.
+More recent matched-pair analyses across multiple US states confirm that rainfall
+consistently raises collision risk \cite{blackEffectsRainfallVehicle2017}.
+
+% ------------------------------------------------------------
+\section{Footnotes} \label{sec:footnotes}
+% ------------------------------------------------------------
+
+Insert a footnote inline with \texttt{\textbackslash footnote\{\}}.
+The sentence ends, a superscript appears, and the note is set at the foot
+of the page.\footnote{This is a live example footnote produced by
+\texttt{\textbackslash footnote\{...\}} immediately after the period.}
+
+Keep footnotes short.  If a note exceeds two lines, move the content into
+the main text or an appendix.
+
+% ------------------------------------------------------------
+\section{URLs and Hyperlinks} \label{sec:urls}
+% ------------------------------------------------------------
+
+\texttt{hyperref} is already loaded.  Every \texttt{\textbackslash ref},
+\texttt{\textbackslash cite}, and table-of-contents entry is automatically
+a clickable link in the PDF.
+
+\begin{description}
+  \item[\texttt{\textbackslash url\{...\}}]
+        Monospace clickable URL: \url{https://www.novaims.unl.pt}
+
+  \item[\texttt{\textbackslash href\{url\}\{anchor text\}}]
+        Hyperlink with custom visible text:
+        \href{https://www.novaims.unl.pt}{NOVA IMS official website}
+
+  \item[DOI/URL in bibliography]
+        Add \texttt{doi = \{10.xxxx/...\}} or \texttt{url = \{https://...\}}
+        to any BibTeX entry and \texttt{biblatex} renders and links it.
+\end{description}
+
+You want to use \texttt{href} for most purposes, since if the URL breaks across lines, the link will still work, whereas \texttt{url} can break but only at certain characters.
+% ------------------------------------------------------------
+\section{Lists} \label{sec:lists}
+% ------------------------------------------------------------
+
+All three list environments are shown live below.
+
+\textbf{Bullet list} (\texttt{itemize}):
+\begin{itemize}
+  \item Crowdsourced incident data (Waze)
+  \item Gridded reanalysis weather data (ERA5-Land)
+  \item Official accident statistics (ANSR)
+\end{itemize}
+
+\textbf{Numbered list} (\texttt{enumerate}):
+\begin{enumerate}
+  \item Download the repository as a ZIP.
+  \item Upload to Overleaf or clone locally.
+  \item Edit \texttt{config/cover.tex} with your metadata.
+  \item Run \texttt{make} to compile.
+\end{enumerate}
+
+\textbf{Definition list} (\texttt{description}):
+\begin{description}
+  \item[ERA5-Land] ECMWF hourly gridded reanalysis product at 9 km resolution.
+  \item[ANSR] Autoridade Nacional de Segurança Rodoviária — the Portuguese road
+              safety authority.
+  \item[GLM] Generalised Linear Model.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Keeping the Source Readable} \label{sec:readable}
+% ------------------------------------------------------------
+
+\begin{itemize}
+  \item Write \textbf{one sentence per line}.  Error messages and Git diffs
+        reference line numbers — shorter lines make both much easier to read.
+  \item Use \texttt{\%} comments to annotate complex tables and equations.
+  \item Never commit generated files (\texttt{*.aux}, \texttt{*.bbl},
+        \texttt{main.pdf}) — the \texttt{.gitignore} already excludes them.
+  \item When in doubt about a package, run \texttt{texdoc \textit{packagename}}
+        in a terminal for the official documentation.
+  \item For a version-control workflow, see Appendix~\ref{app:workflow}.
+\end{itemize}

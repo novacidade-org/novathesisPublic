@@ -1,0 +1,35 @@
+\documentclass[12pt,a4paper,oneside,openany]{memoir}
+
+\usepackage{style/novaims-dgi}
+
+\input{config/packages}
+\input{config/cover}
+\input{config/bibliography}
+\input{config/files}
+
+\begin{document}
+\makeimscovers
+
+\frontmatter
+\loadpreface
+\cleardoublepage
+\tableofcontents*
+\ifprintlistoffigures
+  \cleardoublepage
+  \listoffigures*
+\fi
+\ifprintlistoftables
+  \cleardoublepage
+  \listoftables*
+\fi
+
+\mainmatter
+\loadchapters
+
+\loadannexes
+\loadappendices
+
+\backmatter
+\printfinalbibliography
+\makeimsbackcover
+\end{document}

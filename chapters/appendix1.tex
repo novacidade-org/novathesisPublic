@@ -1,0 +1,136 @@
+% ============================================================
+%  Appendix A — Configuration Quick Reference
+% ============================================================
+\chapter{Configuration Quick Reference} \label{app:config}
+
+This appendix provides a compact one-page summary of every configurable
+option in the template.  Use it as a cheat-sheet once you have read
+Chapter~\ref{chap:template}.
+
+% ------------------------------------------------------------
+\section{Cover Metadata (\texttt{config/cover.tex})} \label{app:cover-ref}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{\textbackslash coverlanguage}]
+        \texttt{en} or \texttt{pt}.  Controls cover language and selects
+        the matching cover PDF asset.
+
+  \item[\texttt{\textbackslash thesistitle}]
+        Full thesis title.
+
+  \item[\texttt{\textbackslash thesisauthor}]
+        Author full name.
+
+  \item[\texttt{\textbackslash thesisdegree}]
+        Degree being awarded.
+
+  \item[\texttt{\textbackslash thesissubmissiondate}]
+        Month and year (e.g.\ \texttt{March 2026}).
+
+  \item[\texttt{\textbackslash thesisschoolEN}]
+        English school name.
+
+  \item[\texttt{\textbackslash thesisschoolPT}]
+        Portuguese school name.
+
+  \item[\texttt{\textbackslash thesisuniversity}]
+        University name.
+
+  \item[\texttt{\textbackslash thesissupervisors}]
+        Primary supervisor block.  Use \texttt{\textbackslash\textbackslash}
+        for line breaks and \texttt{\textbackslash textit} for affiliation.
+
+  \item[\texttt{\textbackslash thesiscosupervisors}]
+        Co-supervisor block, same format.  Leave body empty (\texttt{\{\}})
+        if not applicable.
+
+  \item[\texttt{\textbackslash printbackcovertrue}]
+        Enables the back cover.  Replace with
+        \texttt{\textbackslash printbackcoverfalse} for digital-only.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Document Structure (\texttt{config/files.tex})} \label{app:files-ref}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{\textbackslash perchapterbibliographytrue/false}]
+        Per-chapter vs.\ single end-of-document bibliography.
+
+  \item[\texttt{\textbackslash printlistoffigurestrue/false}]
+        Enables / disables the List of Figures.
+
+  \item[\texttt{\textbackslash printlistoftablestrue/false}]
+        Enables / disables the List of Tables.
+
+  \item[\texttt{\textbackslash printappendicestrue/false}]
+        Enables / disables the appendix block.
+
+  \item[\texttt{\textbackslash printannexestrue/false}]
+        Enables / disables the annex block.
+
+  \item[\texttt{\textbackslash loadchapters}]
+        Macro listing all main chapters via
+        \texttt{\textbackslash chapterwithrefs\{path\}}.
+
+  \item[\texttt{\textbackslash loadappendices}]
+        Macro listing appendix files.  Must call
+        \texttt{\textbackslash imsstartappendices} once at the top.
+
+  \item[\texttt{\textbackslash loadannexes}]
+        Macro listing annex files.  Must call
+        \texttt{\textbackslash imsstartannexes} once at the top.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Front Matter (\texttt{chapters/preface.tex})} \label{app:preface-ref}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{\textbackslash setsdglanguage\{en|pt\}}]
+        Language for SDG icon labels.
+
+  \item[\texttt{\textbackslash setsdgs\{1,3,11\}}]
+        Comma-separated list of SDG goal numbers to display (1--17).
+
+  \item[\texttt{\textbackslash prefacesection\{Name\}}]
+        Opens a new front-matter section.  Available section names:
+        Statement of Integrity, Dedication, Acknowledgements, Quote,
+        Abstract, Resumo, Glossary, Acronyms, Symbols.
+
+  \item[\texttt{\textbackslash keywords\{kw1, kw2\}}]
+        Used inside the Abstract section to print the keyword line.
+
+  \item[\texttt{\textbackslash printsustainablegoals}]
+        Inserts the SDG icon grid.  Call this at the end of the Abstract
+        section.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Suggested Git Workflow} \label{app:workflow}
+% ------------------------------------------------------------
+
+Version control is strongly recommended.  A minimal workflow:
+
+\begin{enumerate}
+  \item Initialise: \texttt{git init} (or clone this repository).
+  \item Work on a feature branch: \texttt{git checkout -b chapter3}.
+  \item Commit frequently with descriptive messages:
+\begin{verbatim}
+git add chapters/chapter3.tex figures/ch3-*.pdf
+git commit -m "chapter3: add methodology section"
+\end{verbatim}
+  \item Merge when stable: \texttt{git checkout main \&\& git merge chapter3}.
+  \item Never commit generated files (\texttt{*.aux}, \texttt{*.bbl},
+        \texttt{main.pdf}, etc.).  The \texttt{.gitignore} already excludes
+        the most common ones.
+\end{enumerate}
+
+Before submission, tag the final version:
+
+\begin{verbatim}
+git tag -a v1.0 -m "Final submission"
+git push origin v1.0
+\end{verbatim}
+

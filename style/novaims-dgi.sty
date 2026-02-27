@@ -1,0 +1,394 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{novaims-dgi}[2026/02/26 NOVA IMS DGI thesis style]
+
+\RequirePackage{iftex}
+\RequirePackage{etoolbox}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{geometry}
+\RequirePackage{setspace}
+\RequirePackage{float}
+\RequirePackage{placeins}
+\RequirePackage{subcaption}
+\RequirePackage{booktabs}
+\RequirePackage{longtable}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{tabularray}
+\UseTblrLibrary{booktabs}
+\RequirePackage[flushleft]{threeparttable}
+\RequirePackage{tablefootnote}
+\RequirePackage{threeparttablex}
+\RequirePackage{url}
+\RequirePackage{amsmath,amsfonts,amssymb,amsopn}
+\ifPDFTeX
+  \RequirePackage{dsfont}
+  \newcommand{\mathbbm}[1]{\mathds{#1}}
+\else
+  \newcommand{\mathbbm}[1]{\mathbb{#1}}
+\fi
+\RequirePackage{bm}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{breakable}
+\RequirePackage{ragged2e}
+\RequirePackage{tikz}
+\RequirePackage{eso-pic}
+\RequirePackage{csquotes}
+\RequirePackage{hyperref}
+\usetikzlibrary{calc}
+
+\definecolor{imslinkblue}{RGB}{16,52,166}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=imslinkblue,
+  citecolor=imslinkblue,
+  urlcolor=imslinkblue
+}
+\graphicspath{{figures/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg,.tif}
+
+\ifPDFTeX
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage[utf8]{inputenc}
+  \RequirePackage{newpxtext}
+  \RequirePackage{newpxmath}
+  \RequirePackage[scaled=0.95]{helvet}
+\else
+  \RequirePackage{fontspec}
+  \setmainfont{Times New Roman}
+  \setsansfont{Arial}
+\fi
+
+\geometry{a4paper,top=3cm,bottom=3cm,left=3.5cm,right=3cm}
+\AtBeginDocument{\OnehalfSpacing}
+
+\setcounter{tocdepth}{2}
+\maxsecnumdepth{subsubsection}
+
+\makeatletter
+\renewcommand*{\@pnumwidth}{2.5em}
+
+\newcommand{\ims@chapterlabel}{Chapter}
+\newcommand{\ims@setchapterlabel}[1]{\gdef\ims@chapterlabel{#1}}
+
+\newcommand{\imsstartmainchapters}{%
+  \renewcommand{\chaptername}{Chapter}%
+  \renewcommand{\thechapter}{\arabic{chapter}}%
+  \renewcommand{\thesection}{\thechapter.\arabic{section}}%
+  \ims@setchapterlabel{Chapter}%
+}
+
+\newcommand{\imsstartannexes}{%
+  \cleardoublepage
+  \chapter*{Annexes}%
+  \addcontentsline{toc}{chapter}{Annexes}%
+  \markboth{}{}%
+  \setcounter{chapter}{0}%
+  \setcounter{section}{0}%
+  \renewcommand{\chaptername}{Annex}%
+  \renewcommand{\thechapter}{\Roman{chapter}}%
+  \renewcommand{\thesection}{\thechapter.\arabic{section}}%
+  \ims@setchapterlabel{Annex}%
+}
+
+\newcommand{\imsstartappendices}{%
+  \cleardoublepage
+  \chapter*{Appendix}%
+  \addcontentsline{toc}{chapter}{Appendix}%
+  \markboth{}{}%
+  \appendix
+  \setcounter{section}{0}%
+  \renewcommand{\chaptername}{Appendix}%
+  \ims@setchapterlabel{Appendix}%
+}
+
+\newcommand{\rightorleftmark}{%
+  \setbox0=\hbox{\rightmark}%
+  \ifdim\wd0>0.1pt\relax
+    \rightmark
+  \else
+    \leftmark
+  \fi
+}
+
+\makepagestyle{ims@mainmatter}
+\makeoddfoot{ims@mainmatter}{}{\thepage}{}
+\makeevenfoot{ims@mainmatter}{}{\thepage}{}
+\makeheadrule{ims@mainmatter}{\textwidth}{\normalrulethickness}
+\makeevenhead{ims@mainmatter}{\small\textsc{\leftmark}}{}{\small\rightorleftmark}
+\makeoddhead{ims@mainmatter}{\small\textsc{\leftmark}}{}{\small\rightorleftmark}
+
+\makepagestyle{ims@frontmatter}
+\makeoddfoot{ims@frontmatter}{}{\thepage}{}
+\makeevenfoot{ims@frontmatter}{}{\thepage}{}
+
+\makepagestyle{ims@chapteropen}
+\makeoddfoot{ims@chapteropen}{}{\thepage}{}
+\makeevenfoot{ims@chapteropen}{}{\thepage}{}
+
+\AtBeginDocument{%
+  \pagestyle{ims@frontmatter}%
+  \copypagestyle{chapter}{ims@frontmatter}%
+}
+\nouppercaseheads
+\renewcommand{\chaptermark}[1]{\markboth{\ims@chapterlabel~\thechapter}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\enspace #1}}
+\pretocmd{\frontmatter}{\pagestyle{ims@frontmatter}\copypagestyle{chapter}{ims@frontmatter}}{}{}
+\pretocmd{\mainmatter}{\pagestyle{ims@mainmatter}\copypagestyle{chapter}{ims@chapteropen}\imsstartmainchapters}{}{}
+
+\chapterstyle{ell}
+\renewcommand{\chs@ell@helper}[1]{%
+  \par%
+    \ifdefstrequal{#1}{}{% Unnumbered chapter
+      % Keep preface-style chapter openings clean (no right marker/line).
+    }{% Numbered chapter
+      \hfill\begin{tabular}{|r@{}}%
+        \leavevmode\chapnumfont\normalfont ~#1\vphantom{1}%
+        \hspace*{3.6pt}%
+        \rule[-13.5pt]{0pt}{14.8mm}%
+        \\%
+      \end{tabular}%
+    }%
+  \par%
+}
+\renewcommand*{\printchaptertitle}[1]{%
+  {\raggedright\chaptitlefont\normalfont #1\par}\nobreak%
+}
+\renewcommand\printchapternonum{%
+  \vphantom{\chapnumfont 1}%
+  \afterchapternum%
+}
+\renewcommand*{\chapnumfont}{\normalfont\Large}
+\renewcommand*{\chaptitlefont}{\normalfont\bfseries\Large}
+\setsecheadstyle{\normalfont\bfseries\large}
+\setsubsecheadstyle{\normalfont\bfseries\normalsize}
+\setsubsubsecheadstyle{\normalfont\bfseries\normalsize}
+\setparaheadstyle{\normalfont\bfseries\normalsize}
+
+\definecolor{imsdarkgrey}{RGB}{100,100,100}
+
+\newcommand{\prefacesection}[1]{%
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+}
+
+\newenvironment{IMSfrontsection}[1]{%
+  \prefacesection{#1}%
+  \begingroup\fontsize{12pt}{14pt}\selectfont\justifying%
+}{%
+  \par\endgroup%
+}
+
+\newenvironment{chapterfrontmatter}{%
+  \par\vspace{0.8\baselineskip}%
+  \begingroup\small\justifying%
+}{%
+  \par\endgroup\vspace{0.6\baselineskip}%
+}
+
+\@ifundefined{abstract}{%
+  \newenvironment{abstract}{%
+    \par\noindent\textbf{Abstract}\par\smallskip\noindent\ignorespaces%
+  }{%
+    \par%
+  }%
+}{%
+  \renewenvironment{abstract}{%
+    \par\noindent\textbf{Abstract}\par\smallskip\noindent\ignorespaces%
+  }{%
+    \par%
+  }%
+}
+
+\@ifundefined{keyword}{%
+  \newenvironment{keyword}{%
+    \par\noindent\textbf{Keywords: }\ignorespaces%
+  }{%
+    \par%
+  }%
+}{%
+  \renewenvironment{keyword}{%
+    \par\noindent\textbf{Keywords: }\ignorespaces%
+  }{%
+    \par%
+  }%
+}
+
+\providecommand{\sep}{\textperiodcentered\space}
+
+\newcommand{\keywords}[1]{\par\smallskip\noindent\textbf{Keywords: }#1\par}
+
+\providecommand{\coverlanguage}{en}
+\providecommand{\thesistitle}{A Very Long and Impressive Thesis Title}
+\providecommand{\thesisauthor}{John Doe}
+\providecommand{\thesisdegree}{Doctor of Philosophy in Information Management}
+\providecommand{\thesissubmissiondate}{January 2026}
+\providecommand{\thesisschoolEN}{NOVA Information Management School}
+\providecommand{\thesisschoolPT}{Instituto Superior de Estatistica e Gestao de Informacao}
+\providecommand{\thesisuniversity}{NOVA University Lisbon}
+\providecommand{\thesissupervisors}{Supervisor Name}
+\providecommand{\thesiscosupervisors}{}
+\providecommand{\imscoverroot}{style/assets/covers/DGI}
+\providecommand{\imscoverlegacyroot}{Chapters/Figures/Covers/1up/templates/DGI}
+\providecommand{\imssdgroot}{style/assets/sdg}
+\providecommand{\imssdglegacyroot}{NOVAthesisFiles/Schools/nova/ims/Images}
+\newif\ifprintbackcover
+\printbackcovertrue
+
+\providecommand{\sdglanguage}{en}
+\providecommand{\selectedsdgs}{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17}
+\newcommand{\setsdglanguage}[1]{\renewcommand{\sdglanguage}{#1}}
+\newcommand{\setsdgs}[1]{\renewcommand{\selectedsdgs}{#1}}
+
+\newcommand{\ims@byword}{\ifdefstrequal{\coverlanguage}{pt}{por}{by}}
+\newcommand{\ims@supervisorlabel}{\ifdefstrequal{\coverlanguage}{pt}{Orientada por}{Supervised by}}
+\newcommand{\ims@dissertationline}{%
+  \ifdefstrequal{\coverlanguage}{pt}%
+  {Tese de doutoramento apresentada como requisito parcial para obtencao do grau de \thesisdegree.}%
+  {A Submission to the Thesis Monitoring Committee (Commisão de Acompanhamento de Tese) presented to the Universidade Nova de Lisboa - Nova IMS in fulfillment of the thesis requirements for the degree of \thesisdegree.}%
+}
+
+\newcommand{\ims@includeasset}[3]{%
+  \IfFileExists{\imscoverlegacyroot/#1/#2}{%
+    \includegraphics[#3]{\imscoverlegacyroot/#1/#2}%
+  }{%
+    \includegraphics[#3]{\imscoverroot/#1/#2}%
+  }%
+}
+
+\newcommand{\ims@includeheadercurve}{%
+  \ifdefstrequal{\coverlanguage}{pt}%
+    {\ims@includeasset{DGI-PT}{IMS_Tese2025__curvas_olho.pdf}{width=\paperwidth,height=\paperheight}}%
+    {\ims@includeasset{DGI-EN}{IMS_Tese2025__curvas_olho.pdf}{width=\paperwidth,height=\paperheight}}%
+}
+
+\newcommand{\ims@includefootercurve}{%
+  \ifdefstrequal{\coverlanguage}{pt}%
+    {\ims@includeasset{DGI-PT}{IMS_Tese2025__curvas_rodape.pdf}{width=\paperwidth,height=\paperheight}}%
+    {\ims@includeasset{DGI-EN}{IMS_Tese2025__curvas_rodape.pdf}{width=\paperwidth,height=\paperheight}}%
+}
+
+\newcommand{\ims@includecoverfront}{%
+  \ifdefstrequal{\coverlanguage}{pt}%
+    {\ims@includeasset{DGI-PT}{Capa_DGI-PT.pdf}{width=\paperwidth,height=\paperheight}}%
+    {\ims@includeasset{DGI-EN}{Capa_DGI-EN.pdf}{width=\paperwidth,height=\paperheight}}%
+}
+
+\newcommand{\ims@includecoverback}{%
+  \ifdefstrequal{\coverlanguage}{pt}%
+    {\ims@includeasset{DGI-PT}{ContraCapa_DGI.pdf}{width=\paperwidth,height=\paperheight}}%
+    {\ims@includeasset{DGI-EN}{ContraCapa_DGI.pdf}{width=\paperwidth,height=\paperheight}}%
+}
+
+\newcommand{\ims@setpagebackground}{%
+  \ClearShipoutPictureBG%
+  \AddToShipoutPictureBG{%
+    \AtPageLowerLeft{\ims@includeheadercurve}%
+  }%
+}
+
+\AtBeginDocument{\ims@setpagebackground}
+
+\newcommand{\ims@sdglabel}{%
+  \ifdefstrequal{\sdglanguage}{pt}%
+    {Objetivos de Desenvolvimento Sustentavel (ODS)}%
+    {Sustainable Development Goals (SDG)}%
+}
+
+\newcommand{\ims@includesdg}[1]{%
+  \IfFileExists{\imssdgroot/sdg-\sdglanguage/sdg-\sdglanguage-#1.pdf}{%
+    \includegraphics[width=1.5cm]{\imssdgroot/sdg-\sdglanguage/sdg-\sdglanguage-#1.pdf}%
+  }{%
+    \IfFileExists{\imssdglegacyroot/sdg-\sdglanguage/sdg-\sdglanguage-#1.pdf}{%
+      \includegraphics[width=1.5cm]{\imssdglegacyroot/sdg-\sdglanguage/sdg-\sdglanguage-#1.pdf}%
+    }{}%
+  }%
+}
+
+\newcommand{\printsustainablegoals}{%
+  \par\vfill%
+  \noindent\textbf{\ims@sdglabel:}\\[1ex]%
+  \foreach \sdg in \selectedsdgs {%
+    \ims@includesdg{\sdg}\hspace{1pt}%
+  }%
+  \par%
+}
+
+\newcommand{\makeimscovers}{%
+  \clearpage
+  \ClearShipoutPictureBG
+  \thispagestyle{empty}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,inner sep=0] at (current page.south west){%
+      \ims@includecoverfront%
+    };
+    \node[
+      anchor=north west,
+      text width=0.74\paperwidth,
+      align=left,
+      text=imsdarkgrey,
+      font=\sffamily\bfseries\fontsize{16.5pt}{21pt}\selectfont
+    ] at ([xshift=1.5cm,yshift=-15.2cm]current page.north west) {\thesistitle};
+    \node[
+      anchor=north west,
+      text width=0.74\paperwidth,
+      align=left,
+      text=imsdarkgrey,
+      font=\sffamily\fontsize{15pt}{17.5pt}\selectfont
+    ] at ([xshift=1.5cm,yshift=-19.2cm]current page.north west) {\ims@byword};
+    \node[
+      anchor=north west,
+      text width=0.74\paperwidth,
+      align=left,
+      text=imsdarkgrey,
+      font=\sffamily\fontsize{12pt}{12pt}\selectfont
+    ] at ([xshift=1.5cm,yshift=-20.8cm]current page.north west) {\thesisauthor};
+  \end{tikzpicture}
+  \null
+  \clearpage
+
+  \thispagestyle{empty}%
+  \begin{center}
+    {\color{imsdarkgrey}\sffamily\bfseries\fontsize{10.3pt}{15.5pt}\selectfont\thesisschoolEN\par}
+    {\color{imsdarkgrey}\sffamily\bfseries\fontsize{10.3pt}{15.5pt}\selectfont\thesisschoolPT\par}
+    {\color{imsdarkgrey}\sffamily\fontsize{8.7pt}{15pt}\selectfont\thesisuniversity\par}
+  \end{center}
+
+  \vspace*{5.3cm}
+  {\centering\color{imsdarkgrey}\sffamily\bfseries\fontsize{16.5pt}{21pt}\selectfont\thesistitle\par}
+  \vspace{1cm}
+  {\centering\sffamily\fontsize{15pt}{17.5pt}\selectfont\ims@byword\par}
+  \vspace{8mm}
+  {\centering\sffamily\fontsize{12pt}{12pt}\selectfont\thesisauthor\par}
+
+  \vspace{2.9cm}
+  {\sffamily\fontsize{11.5pt}{16pt}\selectfont\ims@dissertationline\par}
+
+  \vspace{1cm}
+  {\color{imsdarkgrey}\sffamily\fontsize{11.5pt}{16pt}\selectfont%
+    \textbf{\ims@supervisorlabel:}\par%
+    \thesissupervisors\par%
+    \ifstrempty{\thesiscosupervisors}{}{\thesiscosupervisors\par}%
+  }
+
+  \vfill
+  {\centering\sffamily\fontsize{11pt}{11pt}\selectfont\thesissubmissiondate\par}
+  \clearpage
+  \ims@setpagebackground
+}
+
+\newcommand{\makeimsbackcover}{%
+  \ifprintbackcover
+    \clearpage
+    \ClearShipoutPictureBG
+    \thispagestyle{empty}%
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=south west,inner sep=0] at (current page.south west){%
+        \ims@includecoverback%
+      };
+    \end{tikzpicture}
+    \null
+    \clearpage
+  \fi
+}
+\makeatother

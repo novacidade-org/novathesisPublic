@@ -1,0 +1,56 @@
+% Front matter bundled into one configurable file
+\newcommand{\loadpreface}{\input{chapters/preface}}
+
+% Bibliography strategy
+\newif\ifperchapterbibliography
+\perchapterbibliographytrue
+
+% Lists to print
+\newif\ifprintlistoffigures
+\newif\ifprintlistoftables
+\printlistoffigurestrue
+\printlistoftablestrue
+
+% Optional back matter blocks
+\newif\ifprintannexes
+\newif\ifprintappendices
+\printannexestrue
+\printappendicestrue
+
+% Helper: include a file and print its local bibliography section
+\newcommand{\chapterwithrefs}[1]{%
+  \input{#1}%
+  \ifperchapterbibliography
+    \printbibliography[heading=subbibliography,title={References}]%
+  \fi
+}
+
+% Main chapters (simple include/input only)
+\newcommand{\loadchapters}{%
+  \chapterwithrefs{chapters/chapter1}
+  \chapterwithrefs{chapters/chapter2}
+}
+
+% Annexes (optional, before appendices)
+\newcommand{\loadannexes}{%
+  \ifprintannexes
+    \imsstartannexes
+    \chapterwithrefs{chapters/annex1}
+  \fi
+}
+
+% Appendices (optional)
+\newcommand{\loadappendices}{%
+  \ifprintappendices
+    \imsstartappendices
+    \chapterwithrefs{chapters/appendix1}
+    \chapterwithrefs{chapters/appendix2}
+  \fi
+}
+
+% Global bibliography (used when chapter-level bibliographies are disabled)
+\newcommand{\printfinalbibliography}{%
+  \ifperchapterbibliography\else
+    \printbibliography[heading=bibintoc,title={References}]%
+  \fi
+}

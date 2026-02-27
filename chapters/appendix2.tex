@@ -1,0 +1,161 @@
+% ============================================================
+%  Appendix B — Bibliography and Citation Reference
+% ============================================================
+\chapter{Bibliography and Citation Reference} \label{app:bibliography}
+
+This appendix provides a concise reference for bibliography management
+and citation commands in the template.
+
+% ------------------------------------------------------------
+\section{BibTeX Entry Types} \label{app:bibtypes}
+% ------------------------------------------------------------
+
+The most common entry types and their required fields:
+
+\begin{description}
+  \item[\texttt{@article}]
+        Journal article.  Required: \texttt{author}, \texttt{title},
+        \texttt{journal}, \texttt{year}/\texttt{date}, \texttt{volume},
+        \texttt{pages}.
+
+  \item[\texttt{@book}]
+        Book.  Required: \texttt{author} or \texttt{editor}, \texttt{title},
+        \texttt{publisher}, \texttt{year}/\texttt{date}.
+
+  \item[\texttt{@inbook} / \texttt{@incollection}]
+        Chapter in an edited book.  Required: \texttt{author}, \texttt{title},
+        \texttt{booktitle}, \texttt{editor}, \texttt{publisher},
+        \texttt{year}, \texttt{pages}.
+
+  \item[\texttt{@inproceedings}]
+        Conference paper.  Required: \texttt{author}, \texttt{title},
+        \texttt{booktitle}, \texttt{year}.
+
+  \item[\texttt{@phdthesis} / \texttt{@mastersthesis}]
+        Thesis.  Required: \texttt{author}, \texttt{title}, \texttt{school},
+        \texttt{year}.
+
+  \item[\texttt{@techreport}]
+        Technical report.  Required: \texttt{author}, \texttt{title},
+        \texttt{institution}, \texttt{year}.
+
+  \item[\texttt{@misc}]
+        Anything else (websites, datasets, software).  Use \texttt{url},
+        \texttt{urldate}, and \texttt{note} fields.
+
+  \item[\texttt{@online}]
+        Preferred over \texttt{@misc} for web references.  Use \texttt{url}
+        and \texttt{urldate}.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Example BibTeX Entries} \label{app:bibexamples}
+% ------------------------------------------------------------
+
+\begin{verbatim}
+@article{silva2024,
+  author  = {Silva, João and Costa, Maria},
+  title   = {Traffic accidents in Portugal},
+  journal = {Transport Research},
+  year    = {2024},
+  volume  = {12},
+  number  = {3},
+  pages   = {45--67},
+  doi     = {10.1000/xyz123}
+}
+
+@book{wooldridge2010,
+  author    = {Wooldridge, Jeffrey M.},
+  title     = {Econometric Analysis of Cross Section and Panel Data},
+  publisher = {MIT Press},
+  year      = {2010},
+  edition   = {2nd}
+}
+
+@online{novaims2024,
+  author  = {{NOVA IMS}},
+  title   = {NOVA Information Management School},
+  url     = {https://www.novaims.unl.pt},
+  urldate = {2024-01-15}
+}
+\end{verbatim}
+
+% ------------------------------------------------------------
+\section{Citation Command Reference} \label{app:citecmds}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{\textbackslash cite\{key\}}]
+        Alias for \texttt{\textbackslash parencite} in this template.
+        Produces (Author, Year) in APA.
+
+  \item[\texttt{\textbackslash parencite\{key\}}]
+        Explicit parenthetical citation: (Author, Year).
+
+  \item[\texttt{\textbackslash textcite\{key\}}]
+        Narrative: Author (Year).
+
+  \item[\texttt{\textbackslash parencite[p.~5]\{key\}}]
+        With post-note: (Author, Year, p.~5).
+
+  \item[\texttt{\textbackslash parencite[see][p.~5]\{key\}}]
+        With pre- and post-note: (see Author, Year, p.~5).
+
+  \item[\texttt{\textbackslash citeauthor\{key\}}]
+        Author name only, no year.
+
+  \item[\texttt{\textbackslash citeyear\{key\}}]
+        Year only, no author.
+
+  \item[\texttt{\textbackslash fullcite\{key\}}]
+        Full bibliography entry inline in the text.
+
+  \item[\texttt{\textbackslash nocite\{key\}}]
+        Include in bibliography without an in-text citation.
+
+  \item[\texttt{\textbackslash nocite\{*\}}]
+        Include \emph{all} entries in the \texttt{.bib} file in the
+        bibliography, whether cited or not.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Switching Bibliography Style} \label{app:bibstyle}
+% ------------------------------------------------------------
+
+Open \texttt{config/bibliography.tex}.  Comment out the active block and
+uncomment the block for your desired style.  Only one block may be active
+at a time.
+
+\begin{enumerate}
+  \item \textbf{APA} (default): uncomment the first block, comment the other two.
+  \item \textbf{Numeric}: uncomment the second block, comment the other two.
+  \item \textbf{Author-year}: uncomment the third block, comment the other two.
+\end{enumerate}
+
+After switching, do a full clean build:
+
+\begin{verbatim}
+make clean && make
+\end{verbatim}
+
+or delete \texttt{main.aux}, \texttt{main.bbl}, and \texttt{main.bcf} manually
+before recompiling, otherwise \texttt{biber} may use stale data.
+
+% ------------------------------------------------------------
+\section{Per-chapter vs.\ Global Bibliography} \label{app:perchap}
+% ------------------------------------------------------------
+
+The flag \texttt{\textbackslash perchapterbibliographytrue} in
+\texttt{config/files.tex} controls this behaviour.
+
+\begin{description}
+  \item[Per-chapter (default)] Each chapter ends with its own
+        \emph{References} section listing only the sources cited in that
+        chapter.  Suitable for thesis-by-papers formats.
+
+  \item[Global] A single bibliography is printed at the end of the document,
+        before the appendices.  Set \texttt{\textbackslash perchapterbibliographyfalse}
+        to activate this.  The \texttt{\textbackslash printfinalbibliography}
+        call in \texttt{main.tex} handles rendering it automatically.
+\end{description}
+

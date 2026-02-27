@@ -1,21 +1,101 @@
-MIT License
+The LaTeX Project Public License
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+LPPL Version 1.3c  2008-05-04
 
 Copyright (c) 2026 Dhruv Pandit
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Everyone is allowed to distribute verbatim copies of this license document,
+but modification of it is not allowed.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+PREAMBLE
+========
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The LaTeX Project Public License (LPPL) is the primary license under which
+the LaTeX kernel and the base LaTeX packages are distributed.
+
+You may use this software and refer to it by its name if and only if you
+fulfill the conditions of this license.
+
+If you receive only part of this software, you may distribute it under the
+terms of this license.
+
+DEFINITIONS
+===========
+
+In this license document the following terms are used:
+
+  "Work"         - any files distributed under the terms of this license.
+  "Derived Work" - any work that under any applicable law is derived from
+                   the Work.
+  "Modification" - any procedure that produces a Derived Work under any
+                   applicable law.
+  "Distribute"   - making copies of the Work available from one person to
+                   another, in whole or in part.
+  "Compiled Work"- a version of the Work processed by a computer program
+                   into some other form (e.g. a PDF file).
+  "Current Maintainer" - a person or persons nominated as such within the
+                   Work.
+  "Base Interpreter" - a program or process that is normally needed for
+                   running or interpreting a part of the Work.
+
+CONDITIONS ON DISTRIBUTION AND MODIFICATION
+============================================
+
+1.  Activities other than distribution and/or modification of the Work are
+    not covered by this license; they are outside its scope.
+
+2.  You may, without restriction, reproduce the Work, translate it into
+    another language, or use it for any purpose, provided that in doing so
+    you do not Modify the Work.
+
+3.  You may distribute a copy of the Work in its unmodified form, provided
+    that you include a clear statement that the Work is distributed under
+    the terms of this license and that this license applies to the Work, and
+    provided further that:
+
+    a. you include a copy of this license with the Work, or
+    b. you provide the URI from which a copy of this license can be obtained.
+
+4.  You may distribute a Compiled Work that has been generated from a
+    complete, unmodified copy of the Work as distributed under Clause 3
+    above, as long as that Compiled Work is distributed under the terms of
+    this license.
+
+5.  You may distribute a Derived Work from the Work under the conditions
+    of Clause 4 above, provided that your Derived Work does not use the
+    reserved name(s) of the Work, and provided furthermore that:
+
+    a. You rename any non-standard file formats you use from those of the
+       original Work so as to not be confused with the Work's file formats.
+    b. You include a prominent statement in your Derived Work that it is a
+       derivative of the Work, and that the original Work is distributed
+       under the terms of this license.
+
+6.  No restrictions are placed on installing and using this software.
+
+7.  If the Work is labeled "unamaintained", then the Current Maintainer
+    may be understood to be any person who distributes the Work.
+
+NO WARRANTY
+===========
+
+There is no warranty for the Work. Except when otherwise stated in writing,
+the Work is provided "as is", without warranty of any kind, either expressed
+or implied, including, but not limited to, the implied warranties of
+merchantability and fitness for a particular purpose. The entire risk as to
+the quality and performance of the Work is with you. Should the Work prove
+defective, you assume the cost of all necessary servicing, repair, or
+correction.
+
+In no event unless required by applicable law or agreed to in writing will
+the Copyright Holder, or any author named in the Work, or any other party
+who may modify and/or distribute the Work, be liable to you for damages,
+including any general, special, incidental or consequential damages arising
+out of the use or inability to use the Work.
+
+This license applies to this version of the Work and any subsequent version
+released by the Current Maintainer.
+
+Full text: https://www.latex-project.org/lppl/lppl-1-3c

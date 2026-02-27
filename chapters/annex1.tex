@@ -1,0 +1,165 @@
+% ============================================================
+%  Annex I — Useful LaTeX Command Reference
+% ============================================================
+\chapter{Useful \LaTeX{} Command Reference} \label{ann:commands}
+
+This annex is a compact command reference for formatting constructs that
+appear frequently in theses but are not covered in Chapter~\ref{chap:latex}.
+
+% ------------------------------------------------------------
+\section{Text Formatting} \label{ann:textformat}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{\textbackslash textbf\{text\}}]
+        \textbf{Bold text.}
+
+  \item[\texttt{\textbackslash textit\{text\}}]
+        \textit{Italic text.}
+
+  \item[\texttt{\textbackslash texttt\{text\}}]
+        \texttt{Monospace / typewriter text.}  Use for code, file names, and
+        commands.
+
+  \item[\texttt{\textbackslash emph\{text\}}]
+        \emph{Contextual emphasis.}  Italic in normal context; roman inside
+        an already-italic environment.  Prefer this over
+        \texttt{\textbackslash textit} for emphasis.
+
+  \item[\texttt{\textbackslash underline\{text\}}]
+        \underline{Underlined text.}  Use sparingly.
+
+  \item[\texttt{\textbackslash small}, \texttt{\textbackslash footnotesize},
+        \texttt{\textbackslash large}, \texttt{\textbackslash Large}]
+        Relative font-size switches.  These are declarations (not
+        commands with arguments), so wrap them in a group:
+        \verb|{\small small text}|.
+
+  \item[\texttt{\textbackslash textsc\{text\}}]
+        \textsc{Small capitals.}
+
+  \item[\texttt{\textbackslash textsuperscript\{n\}}]
+        Superscript: 1\textsuperscript{st}, 2\textsuperscript{nd}.
+
+  \item[\texttt{\textbackslash textsubscript\{n\}}]
+        Subscript in text mode.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Spacing and Breaks} \label{ann:spacing}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{\textasciitilde}]
+        Non-breaking space.  Always use between a word and a
+        \texttt{\textbackslash ref} or number:
+        \verb|Figure~\ref{fig:x}|, \verb|Table~1|.
+
+  \item[\texttt{\textbackslash,}]
+        Thin space.  Useful in maths and units: \verb|$3\,\mathrm{km}$|.
+
+  \item[\texttt{\textbackslash quad}, \texttt{\textbackslash qquad}]
+        Wide horizontal spaces (1 em and 2 em respectively).
+
+  \item[\texttt{\textbackslash newline} or \texttt{\textbackslash\textbackslash}]
+        Force a line break within a paragraph.  Avoid in normal prose.
+
+  \item[\texttt{\textbackslash newpage}]
+        Force a page break.  Avoid until the final formatting pass.
+
+  \item[\texttt{\textbackslash noindent}]
+        Suppress paragraph indentation on the following paragraph.
+
+  \item[\texttt{\textbackslash vspace\{1cm\}}]
+        Insert vertical space.  Use with care; prefer structural commands.
+\end{description}
+
+% ------------------------------------------------------------
+\section{Special Characters} \label{ann:special}
+% ------------------------------------------------------------
+
+Some characters have special meaning in \LaTeX{} and must be escaped:
+
+\begin{center}
+\begin{tabular}{ll}
+  \toprule
+  Character & Command \\
+  \midrule
+  \%        & \texttt{\textbackslash\%} \\
+  \$        & \texttt{\textbackslash\$} \\
+  \&        & \texttt{\textbackslash\&} \\
+  \#        & \texttt{\textbackslash\#} \\
+  \_        & \texttt{\textbackslash\_} \\
+  \{        & \texttt{\textbackslash\{} \\
+  \}        & \texttt{\textbackslash\}} \\
+  \textasciitilde & \texttt{\textbackslash textasciitilde} \\
+  \textasciicircum & \texttt{\textbackslash textasciicircum} \\
+  \textbackslash & \texttt{\textbackslash textbackslash} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ------------------------------------------------------------
+\section{Dashes and Quotation Marks} \label{ann:dashes}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[Hyphen (\texttt{-})] Word-hyphenation, compound adjectives:
+        \emph{well-known}, \emph{data-driven}.
+
+  \item[En-dash (\texttt{-{}-})] Ranges: pages 12--15, years 2020--2026.
+
+  \item[Em-dash (\texttt{-{}-{}-})] Interruption or parenthetical aside---like
+        this one---in running text.
+
+  \item[Opening double quotes (\texttt{``})] Typed with two backticks:
+        ``quoted text''.
+
+  \item[Closing double quotes (\texttt{''})] Typed with two apostrophes.
+\end{description}
+
+Never use the keyboard \texttt{"} character for quotes in \LaTeX.
+
+% ------------------------------------------------------------
+\section{Floats and Placement} \label{ann:floats}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{h}] Place \emph{here} (approximately).
+  \item[\texttt{t}] Place at the \emph{top} of a page.
+  \item[\texttt{b}] Place at the \emph{bottom} of a page.
+  \item[\texttt{p}] Place on a dedicated float \emph{page}.
+  \item[\texttt{!}] Override \LaTeX's internal quality thresholds.
+\end{description}
+
+The specifier \texttt{[htbp]} is the recommended default.  If \LaTeX{}
+still cannot place a float satisfactorily, use
+\texttt{\textbackslash FloatBarrier} (from the \texttt{placeins} package)
+to force all pending floats to be placed before continuing.
+
+% ------------------------------------------------------------
+\section{Common Environments} \label{ann:envs}
+% ------------------------------------------------------------
+
+\begin{description}
+  \item[\texttt{verbatim}]
+        Typesets text exactly as typed, in monospace.  No \LaTeX{} commands
+        are interpreted.  Use for code samples and command examples.
+
+  \item[\texttt{quote}]
+        Indented single-paragraph quotation.
+
+  \item[\texttt{quotation}]
+        Indented multi-paragraph quotation with first-line indentation.
+
+  \item[\texttt{center}]
+        Centres content horizontally.
+
+  \item[\texttt{flushleft} / \texttt{flushright}]
+        Left- or right-aligns content.
+
+  \item[\texttt{minipage}]
+        Creates a boxed region of specified width.  Useful for placing two
+        blocks side by side without a figure environment.
+\end{description}
+

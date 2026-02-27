@@ -1,0 +1,48 @@
+% Cover language: en or pt
+\renewcommand{\coverlanguage}{en}
+
+% Optional cover asset paths (legacy path is auto-detected first).
+% \renewcommand{\imscoverlegacyroot}{Chapters/Figures/Covers/1up/templates/DGI}
+% \renewcommand{\imscoverroot}{style/assets/covers/DGI}
+
+% Core thesis identity
+\renewcommand{\thesistitle}{A Very Long and Impressive Thesis Title}
+\renewcommand{\thesisauthor}{John Doe}
+\renewcommand{\thesisdegree}{PhD in Information Management}
+\renewcommand{\thesissubmissiondate}{January 2026}
+
+% Institution labels
+\renewcommand{\thesisschoolEN}{NOVA Information Management School}
+\renewcommand{\thesisschoolPT}{Instituto Superior de Estatistica e Gestao de Informacao}
+\renewcommand{\thesisuniversity}{NOVA University Lisbon}
+
+% dissertationline (Either CAT or Final Document)
+\makeatletter
+\renewcommand{\ims@dissertationline}{%
+  \ifdefstrequal{\coverlanguage}{pt}%
+  {Tese de doutoramento apresentada como requisito parcial para obtencao do grau de \thesisdegree.}%
+  {A Submission to the Thesis Monitoring Committee (Commisão de Acompanhamento de Tese) presented to the Universidade Nova de Lisboa - Nova IMS in fulfillment of the thesis requirements for the degree of \thesisdegree. (You can change this based on if its a CAT or Final Document)}%
+}
+\makeatother
+
+% % Override the dissertation line
+% \makeatletter
+% \renewcommand{\ims@dissertationline}{%
+%   \ifdefstrequal{\coverlanguage}{pt}%
+%   {Tese de doutoramento apresentada como requisito parcial para obtencao do grau de \thesisdegree.}%
+%   {Your new English text here for the degree of \thesisdegree.}%
+% }
+% \makeatother
+
+% Supervisors (use \\ for line breaks)
+\renewcommand{\thesissupervisors}{%
+\noindent Jane Smith
+\\ \textit{Associate Professor, Department of Information Science, Some University, Country}
+}
+\renewcommand{\thesiscosupervisors}{%
+\noindent John Smith
+\\ \textit{Assistant Professor, Department of Data Science, Another University, Country}
+}
+
+% Toggle back cover printing
+\printbackcovertrue
