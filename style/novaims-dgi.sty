@@ -59,8 +59,10 @@
   \setsansfont{Arial}
 \fi
 
-\geometry{a4paper,top=3cm,bottom=3cm,left=3.5cm,right=3cm}
-\AtBeginDocument{\OnehalfSpacing}
+\geometry{a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm}
+\AtBeginDocument{\normalsize\SingleSpacing}
+\setlength{\headsep}{10pt}
+\setlength{\footskip}{18pt}
 
 \setcounter{tocdepth}{2}
 \maxsecnumdepth{subsubsection}
@@ -115,8 +117,8 @@
 \makeoddfoot{ims@mainmatter}{}{\thepage}{}
 \makeevenfoot{ims@mainmatter}{}{\thepage}{}
 \makeheadrule{ims@mainmatter}{\textwidth}{\normalrulethickness}
-\makeevenhead{ims@mainmatter}{\small\textsc{\leftmark}}{}{\small\rightorleftmark}
-\makeoddhead{ims@mainmatter}{\small\textsc{\leftmark}}{}{\small\rightorleftmark}
+\makeevenhead{ims@mainmatter}{\footnotesize\textsc{\leftmark}}{}{\footnotesize\rightorleftmark}
+\makeoddhead{ims@mainmatter}{\footnotesize\textsc{\leftmark}}{}{\footnotesize\rightorleftmark}
 
 \makepagestyle{ims@frontmatter}
 \makeoddfoot{ims@frontmatter}{}{\thepage}{}
@@ -179,21 +181,192 @@
   \par\endgroup%
 }
 
+\newif\ifims@chapter@meta@printed
+\newcounter{ims@chapter@metaid}
+\newcounter{ims@chapter@corcounter}
+\newcounter{ims@chapter@affcounter}
+\def\ims@chapter@meta@printed{0}
+
+\def\ims@aff@organization{}
+\def\ims@aff@city{}
+\def\ims@aff@country{}
+\define@key{imsaff}{organization}{\def\ims@aff@organization{#1}}
+\define@key{imsaff}{city}{\def\ims@aff@city{#1}}
+\define@key{imsaff}{country}{\def\ims@aff@country{#1}}
+
+\newcommand{\ims@chapter@resetmeta}{%
+  \stepcounter{ims@chapter@metaid}%
+  \gdef\ims@chapter@meta@printed{0}%
+  \global\setcounter{ims@chapter@corcounter}{0}%
+  \global\setcounter{ims@chapter@affcounter}{0}%
+  \gdef\ims@chapter@authors{}%
+  \gdef\ims@chapter@afforder{}%
+  \gdef\ims@chapter@cortexts{}%
+}
+
+\newcommand{\ims@corsymbol}[1]{%
+  \ifcase#1\or *\or \dagger\or \ddagger\or \S\or \P\or \|\or **\or \dagger\dagger\else *\fi%
+}
+
+\newcommand{\ims@getcorlabel}[1]{%
+  \edef\ims@currentcorcs{ims@chapter@corlabel@\number\value{ims@chapter@metaid}@#1}%
+  \ifcsdef{\ims@currentcorcs}{%
+    \edef\ims@currentcorlabel{\csuse{\ims@currentcorcs}}%
+  }{%
+    \stepcounter{ims@chapter@corcounter}%
+    \edef\ims@currentcorlabel{\ims@corsymbol{\value{ims@chapter@corcounter}}}%
+    \csdef{\ims@currentcorcs}{\ims@currentcorlabel}%
+  }%
+}
+
+\newcommand{\ims@appendaffid}[1]{%
+  \ifstrempty{#1}{}{%
+    \edef\ims@currentaffseencs{ims@chapter@affseen@\number\value{ims@chapter@metaid}@#1}%
+    \ifcsdef{\ims@currentaffseencs}{}{%
+      \csdef{\ims@currentaffseencs}{1}%
+      \ifdefempty{\ims@chapter@afforder}{%
+        \gdef\ims@chapter@afforder{#1}%
+      }{%
+        \xappto\ims@chapter@afforder{,#1}%
+      }%
+    }%
+  }%
+}
+
+\newcommand{\ims@appendaffidlist}[1]{%
+  \ifstrempty{#1}{}{%
+    \forcsvlist{\ims@appendaffid}{#1}%
+  }%
+}
+
+\newcommand{\ims@chapter@author}[2][]{%
+  \def\ims@currentauthor{#2}%
+  \ifstrempty{#1}{}{%
+    \g@addto@macro\ims@currentauthor{\textsuperscript{#1}}%
+    \ims@appendaffidlist{#1}%
+  }%
+  \protected@xappto\ims@chapter@authors{%
+    \noexpand\noindent\expandonce{\ims@currentauthor}\noexpand\par%
+  }%
+}
+
+\newcommand{\ims@chapter@affiliation}[2][]{%
+  \ims@storeaffiliation{#1}{#2}%
+}
+
+\newcommand{\ims@chapter@corref}[1]{%
+  \ims@getcorlabel{#1}%
+  \textsuperscript{\ims@currentcorlabel}%
+}
+
+\newcommand{\ims@chapter@cortext}[2][]{%
+  \def\ims@currentcorkey{#1}%
+  \ifdefempty{\ims@currentcorkey}{\def\ims@currentcorkey{default}}{}%
+  \ims@getcorlabel{\ims@currentcorkey}%
+  \protected@edef\ims@currentcorline{%
+    \noexpand\noindent\noexpand\textsuperscript{\ims@currentcorlabel}#2\noexpand\par%
+  }%
+  \protected@xappto\ims@chapter@cortexts{\expandonce{\ims@currentcorline}}%
+}
+
+\providecommand{\corref}[1]{}
+\providecommand{\cortext}[2][]{}
+\providecommand{\affiliation}[2][]{}
+
+\newcommand{\ims@storeaffiliation}[2]{%
+  \def\ims@aff@organization{}%
+  \def\ims@aff@city{}%
+  \def\ims@aff@country{}%
+  \setkeys{imsaff}{#2}%
+  \def\ims@currentaff{}%
+  \ifdefempty{\ims@aff@organization}{%
+    \protected@edef\ims@currentaff{#2}%
+  }{%
+    \protected@edef\ims@currentaff{\ims@aff@organization}%
+  }%
+  \ifdefempty{\ims@aff@city}{}{%
+    \ifdefempty{\ims@currentaff}{%
+      \protected@edef\ims@currentaff{\ims@aff@city}%
+    }{%
+      \protected@edef\ims@currentaff{\ims@currentaff, \ims@aff@city}%
+    }%
+  }%
+  \ifdefempty{\ims@aff@country}{}{%
+    \ifdefempty{\ims@currentaff}{%
+      \protected@edef\ims@currentaff{\ims@aff@country}%
+    }{%
+      \protected@edef\ims@currentaff{\ims@currentaff, \ims@aff@country}%
+    }%
+  }%
+  \ifstrempty{#1}{%
+    \stepcounter{ims@chapter@affcounter}%
+    \edef\ims@currentaffid{\number\value{ims@chapter@affcounter}}%
+  }{%
+    \edef\ims@currentaffid{#1}%
+  }%
+  \edef\ims@currentafftextcs{ims@chapter@afftext@\number\value{ims@chapter@metaid}@\ims@currentaffid}%
+  \csxdef{\ims@currentafftextcs}{\expandonce{\ims@currentaff}}%
+  \ims@appendaffidlist{\ims@currentaffid}%
+}
+
+\newcommand{\ims@printoneaffiliation}[1]{%
+  \edef\ims@currentafftextcs{ims@chapter@afftext@\number\value{ims@chapter@metaid}@#1}%
+  \@ifundefined{\ims@currentafftextcs}{}{%
+    \noindent\textsuperscript{#1}\csuse{\ims@currentafftextcs}\par%
+  }%
+}
+
+\newcommand{\ims@printchaptermeta}{%
+  \ifdefstring{\ims@chapter@meta@printed}{1}{}{%
+    \ifboolexpr{
+      not test {\ifdefempty{\ims@chapter@authors}}
+      or
+      not test {\ifdefempty{\ims@chapter@afforder}}
+      or
+      not test {\ifdefempty{\ims@chapter@cortexts}}
+    }{%
+      \par\smallskip%
+      \noindent\ims@chapter@authors%
+      \ifdefempty{\ims@chapter@afforder}{}{%
+        \vspace{0.35\baselineskip}%
+        {\footnotesize%
+          \renewcommand*{\do}[1]{\ims@printoneaffiliation{##1}}%
+          \expandafter\docsvlist\expandafter{\ims@chapter@afforder}%
+        }%
+      }%
+      \ifdefempty{\ims@chapter@cortexts}{}{%
+        \vspace{0.35\baselineskip}%
+        {\footnotesize\ims@chapter@cortexts}%
+      }%
+      \vspace{0.65\baselineskip}%
+    }{}%
+    \gdef\ims@chapter@meta@printed{1}%
+  }%
+}
+
 \newenvironment{chapterfrontmatter}{%
   \par\vspace{0.8\baselineskip}%
   \begingroup\small\justifying%
+  \ims@chapter@resetmeta%
+  \let\author\ims@chapter@author
+  \let\affiliation\ims@chapter@affiliation
+  \let\corref\ims@chapter@corref
+  \let\cortext\ims@chapter@cortext
 }{%
+  \ims@printchaptermeta%
   \par\endgroup\vspace{0.6\baselineskip}%
 }
 
 \@ifundefined{abstract}{%
   \newenvironment{abstract}{%
+    \ims@printchaptermeta%
     \par\noindent\textbf{Abstract}\par\smallskip\noindent\ignorespaces%
   }{%
     \par%
   }%
 }{%
   \renewenvironment{abstract}{%
+    \ims@printchaptermeta%
     \par\noindent\textbf{Abstract}\par\smallskip\noindent\ignorespaces%
   }{%
     \par%
@@ -202,12 +375,14 @@
 
 \@ifundefined{keyword}{%
   \newenvironment{keyword}{%
+    \ims@printchaptermeta%
     \par\noindent\textbf{Keywords: }\ignorespaces%
   }{%
     \par%
   }%
 }{%
   \renewenvironment{keyword}{%
+    \ims@printchaptermeta%
     \par\noindent\textbf{Keywords: }\ignorespaces%
   }{%
     \par%
@@ -219,10 +394,10 @@
 \newcommand{\keywords}[1]{\par\smallskip\noindent\textbf{Keywords: }#1\par}
 
 \providecommand{\coverlanguage}{en}
-\providecommand{\thesistitle}{A Very Long and Impressive Thesis Title}
-\providecommand{\thesisauthor}{John Doe}
+\providecommand{\thesistitle}{Essays on weather shocks and socioeconomic impacts in Portugal}
+\providecommand{\thesisauthor}{Dhruv Akshay Pandit}
 \providecommand{\thesisdegree}{Doctor of Philosophy in Information Management}
-\providecommand{\thesissubmissiondate}{January 2026}
+\providecommand{\thesissubmissiondate}{\today}
 \providecommand{\thesisschoolEN}{NOVA Information Management School}
 \providecommand{\thesisschoolPT}{Instituto Superior de Estatistica e Gestao de Informacao}
 \providecommand{\thesisuniversity}{NOVA University Lisbon}
@@ -232,6 +407,9 @@
 \providecommand{\imscoverlegacyroot}{Chapters/Figures/Covers/1up/templates/DGI}
 \providecommand{\imssdgroot}{style/assets/sdg}
 \providecommand{\imssdglegacyroot}{NOVAthesisFiles/Schools/nova/ims/Images}
+\providecommand{\imsheaderlogowidth}{1.05cm}
+\providecommand{\imsheaderlogoxshift}{1.25cm}
+\providecommand{\imsheaderlogoyshift}{-0.90cm}
 \newif\ifprintbackcover
 \printbackcovertrue
 
@@ -262,6 +440,12 @@
     {\ims@includeasset{DGI-EN}{IMS_Tese2025__curvas_olho.pdf}{width=\paperwidth,height=\paperheight}}%
 }
 
+\newcommand{\ims@includeheaderlogo}{%
+  \ifdefstrequal{\coverlanguage}{pt}%
+    {\ims@includeasset{DGI-PT}{IMS_Tese2025__curvas_olho.pdf}{width=\imsheaderlogowidth,trim=0 735 520 0,clip}}%
+    {\ims@includeasset{DGI-EN}{IMS_Tese2025__curvas_olho.pdf}{width=\imsheaderlogowidth,trim=0 735 520 0,clip}}%
+}
+
 \newcommand{\ims@includefootercurve}{%
   \ifdefstrequal{\coverlanguage}{pt}%
     {\ims@includeasset{DGI-PT}{IMS_Tese2025__curvas_rodape.pdf}{width=\paperwidth,height=\paperheight}}%
@@ -282,9 +466,6 @@
 
 \newcommand{\ims@setpagebackground}{%
   \ClearShipoutPictureBG%
-  \AddToShipoutPictureBG{%
-    \AtPageLowerLeft{\ims@includeheadercurve}%
-  }%
 }
 
 \AtBeginDocument{\ims@setpagebackground}
@@ -368,7 +549,7 @@
   {\color{imsdarkgrey}\sffamily\fontsize{11.5pt}{16pt}\selectfont%
     \textbf{\ims@supervisorlabel:}\par%
     \thesissupervisors\par%
-    \ifstrempty{\thesiscosupervisors}{}{\thesiscosupervisors\par}%
+    \ifdefempty{\thesiscosupervisors}{}{\thesiscosupervisors\par}%
   }
 
   \vfill

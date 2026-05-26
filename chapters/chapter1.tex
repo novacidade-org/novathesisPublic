@@ -3,12 +3,31 @@
 % ============================================================
 \chapter{Template Documentation} \label{chap:template}
 
-This chapter is the complete documentation for the NOVA IMS LaTeX Thesis Template.
+
+\begin{chapterfrontmatter}
+\author[1]{Dhruv Akshay Pandit\corref{cor1}}
+
+
+\cortext[cor1]{\textbf{Correspondence to}: NOVA Information Management School, Universidade NOVA de Lisboa, Campus de Campolide, 1070-312 Lisboa, Portugal}
+
+\affiliation[1]{
+  organization={Nova Information Management School (NOVA IMS), Universidade Nova de Lisboa},
+  city={Lisbon},
+  country={Portugal}
+}
+
+  \begin{abstract}
+    \small \noindent This chapter is the complete documentation for the NOVA IMS LaTeX Thesis Template.
 It explains how every configuration file works, what each option does, and how to
 adapt the template for your own thesis.  Read this chapter carefully before you
 start writing.  Once you are comfortable, you can delete or archive it and replace
 it with your own Introduction.
-
+  \end{abstract}
+  \begin{keyword}
+    \small
+    keyword one \sep keyword two \sep keyword three
+  \end{keyword}
+\end{chapterfrontmatter}
 % ------------------------------------------------------------
 \section{Overview} \label{sec:overview}
 % ------------------------------------------------------------
@@ -322,14 +341,30 @@ These use the standard \texttt{description} environment inside a
 \section{Using the Chapter Front Matter} \label{sec:chapterfrontmatter}
 % ------------------------------------------------------------
 
+
 For article-style chapters (e.g., papers submitted for publication), the template
-provides a \texttt{chapterfrontmatter} environment that prints a chapter-level
-abstract and keywords immediately after the chapter heading:
+provides a \texttt{chapterfrontmatter} environment that prints a chapter-level authors, abstract and keywords immediately after the chapter heading:
 
 \begin{verbatim}
 \chapter{My Chapter Title} \label{chap:mychapter}
 
 \begin{chapterfrontmatter}
+\author[1]{Author1\corref{cor1}}
+\author[2]{Author2}
+\author[1]{Author3}
+
+\cortext[cor1]{\textbf{Correspondence to}: NOVA Information Management School, Universidade NOVA de Lisboa, Campus de Campolide, 1070-312 Lisboa, Portugal}
+
+\affiliation[1]{
+  organization={Nova Information Management School (NOVA IMS), Universidade Nova de Lisboa},
+  city={Lisbon},
+  country={Portugal}
+}
+\affiliation[2]{
+  organization={ORG2},
+  city={Lisbon},
+  country={Portugal}
+}
   \begin{abstract}
     \small \noindent Chapter-level abstract text here.
   \end{abstract}
